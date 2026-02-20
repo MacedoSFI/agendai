@@ -1,0 +1,28 @@
+# ── Ambiente ──────────────────────────────
+.env
+.env.local
+.env.production
+*.env
+
+# ── Node ──────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# ── React build ───────────────────────────
+frontend/build/
+frontend/.cache/
+
+# ── Sistema ───────────────────────────────
+.DS_Store
+Thumbs.db
+*.log
+
+# ── VSCode ────────────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+
+# ── Uploads/temporários ───────────────────
+uploads/
+tmp/
+EOF
