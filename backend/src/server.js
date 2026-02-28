@@ -39,7 +39,7 @@ app.use((err, _req, res, _next) => {
 });
 
 // ── Start ─────────────────────────────────────
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 AgendAI Backend rodando na porta ${PORT}`);
   console.log(`📡 API: http://localhost:${PORT}/api`);
   startReminderJob();
