@@ -25,4 +25,4 @@ Thumbs.db
 # ── Uploads/temporários ───────────────────
 uploads/
 tmp/
-EOF
+EOFfrontend/.env.production
