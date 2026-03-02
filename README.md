@@ -2,8 +2,6 @@
 
 Sistema completo multi-tenant para profissionais autônomos gerenciarem seus agendamentos, clientes e serviços, com integração WhatsApp.
 
-github 
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDH/6fGcgNiiOAd0R/KMUmc7OiLnx4tBoUIN0EpdM7kO felipe.nomade@yahoo.com
 
 
 ## 🚀 Stack
