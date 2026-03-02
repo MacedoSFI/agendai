@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import LoginPage from './pages/LoginPage';
 import LandingPage from './pages/LandingPage';
+import OnboardingPage from './pages/OnboardingPage';
 import DashboardPage from './pages/DashboardPage';
 import AgendaPage from './pages/AgendaPage';
 import AppointmentsPage from './pages/AppointmentsPage';
@@ -15,7 +16,9 @@ import { BarbeariaNichePage, ClinicaNichePage, PsicologoNichePage, Nutricionista
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
-  return user ? children : <Navigate to="/login" replace />;
+  if (!user) return <Navigate to="/login" replace />;
+  if (!user.onboarding_completed) return <Navigate to="/onboarding" replace />;
+  return children;
 }
 
 export default function App() {
@@ -27,12 +30,13 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<LoginPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
           <Route path="/para/barbearia" element={<BarbeariaNichePage />} />
           <Route path="/para/clinica" element={<ClinicaNichePage />} />
           <Route path="/para/psicologo" element={<PsicologoNichePage />} />
           <Route path="/para/nutricionista" element={<NutricionistaNichePage />} />
 
-          {/* Páginas privadas (requerem login) */}
+          {/* Páginas privadas (requerem login + onboarding) */}
           <Route path="/app" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="/app/dashboard" replace />} />
             <Route path="dashboard" element={<DashboardPage />} />

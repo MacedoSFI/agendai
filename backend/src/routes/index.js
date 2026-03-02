@@ -27,6 +27,10 @@ router.post('/services', auth, servicesCtrl.create);
 router.put('/services/:id', auth, servicesCtrl.update);
 router.delete('/services/:id', auth, servicesCtrl.remove);
 
+// ── Working Hours ─────────────────────────────
+const workingHoursRouter = require('./workingHours');
+router.use('/working-hours', workingHoursRouter);
+
 // ── Appointments ──────────────────────────────
 router.get('/appointments', auth, apptCtrl.getAll);
 router.get('/appointments/report', auth, apptCtrl.getReport);
