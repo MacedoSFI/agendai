@@ -16,19 +16,19 @@ export default function Layout() {
     : 'U';
 
   const navItems = [
-    { to: '/dashboard', icon: '🏠', label: 'Dashboard' },
-    { to: '/agenda', icon: '📅', label: 'Agenda' },
-    { to: '/appointments', icon: '📋', label: 'Agendamentos' },
+    { to: '/app/dashboard', icon: '🏠', label: 'Dashboard' },
+    { to: '/app/agenda', icon: '📅', label: 'Agenda' },
+    { to: '/app/appointments', icon: '📋', label: 'Agendamentos' },
   ];
 
   const navItems2 = [
-    { to: '/clients', icon: '👥', label: 'Clientes' },
-    { to: '/services', icon: '✂️', label: 'Serviços' },
+    { to: '/app/clients', icon: '👥', label: 'Clientes' },
+    { to: '/app/services', icon: '✂️', label: 'Serviços' },
   ];
 
   const navItems3 = [
-    { to: '/reports', icon: '📊', label: 'Relatórios' },
-    { to: '/settings', icon: '⚙️', label: 'Configurações' },
+    { to: '/app/reports', icon: '📊', label: 'Relatórios' },
+    { to: '/app/settings', icon: '⚙️', label: 'Configurações' },
   ];
 
   return (

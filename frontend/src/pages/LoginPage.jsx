@@ -19,7 +19,7 @@ export default function LoginPage() {
     setLoading(true); setError('');
     try {
       await login(loginForm.email, loginForm.password);
-      navigate('/dashboard');
+      navigate('/app/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Erro ao fazer login');
     } finally { setLoading(false); }
@@ -30,7 +30,7 @@ export default function LoginPage() {
     setLoading(true); setError('');
     try {
       await register(registerForm);
-      navigate('/dashboard');
+      navigate('/app/dashboard');
     } catch (err) {
       setError(err.response?.data?.error || 'Erro ao cadastrar');
     } finally { setLoading(false); }
