@@ -37,7 +37,8 @@ export default function App() {
           <Route path="/para/clinica" element={<ClinicaNichePage />} />
           <Route path="/para/psicologo" element={<PsicologoNichePage />} />
           <Route path="/para/nutricionista" element={<NutricionistaNichePage />} />
-
+          <Route path="/reset-password" element={<LoginPage />} />
+          
           {/* Páginas privadas (requerem login + onboarding) */}
           <Route path="/app" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="/app/dashboard" replace />} />
