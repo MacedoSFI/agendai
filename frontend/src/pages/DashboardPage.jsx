@@ -65,7 +65,7 @@ export default function DashboardPage() {
                 <tbody>
                   {today.map(a => (
                     <tr key={a.id}>
-                      <td><strong>{new Date(a.start_time).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</strong></td>
+                      <td><strong>{new Date(a.start_time).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'})}</strong></td>
                       <td>{a.client_name}</td>
                       <td><span className="color-dot" style={{background:a.service_color||'#7c6af7'}}></span>{a.service_name}</td>
                       <td>{statusBadge(a.status)}</td>
@@ -85,7 +85,7 @@ export default function DashboardPage() {
                 <tbody>
                   {upcoming.map(a => (
                     <tr key={a.id}>
-                      <td>{new Date(a.start_time).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}</td>
+                      <td>{new Date(a.start_time).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'America/Sao_Paulo'})}</td>
                       <td>{a.client_name}</td>
                       <td>{a.service_name}</td>
                     </tr>
