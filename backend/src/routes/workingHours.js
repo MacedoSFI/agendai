@@ -8,7 +8,7 @@ router.get('/', auth, async (req, res) => {
   try {
     const { rows } = await pool.query(
       'SELECT * FROM working_hours WHERE user_id = $1 ORDER BY day_of_week',
-      [req.user.id]
+      [req.userId]
     );
     res.json(rows);
   } catch (err) {
@@ -33,7 +33,7 @@ router.post('/', auth, async (req, res) => {
           lunch_start = EXCLUDED.lunch_start,
           lunch_end = EXCLUDED.lunch_end,
           updated_at = NOW()
-      `, [req.user.id, h.day_of_week, h.is_open, h.start_time, h.end_time, h.lunch_start || null, h.lunch_end || null]);
+      `, [req.userId, h.day_of_week, h.is_open, h.start_time, h.end_time, h.lunch_start || null, h.lunch_end || null]);
     }
     await pool.query('COMMIT');
     res.json({ success: true });
@@ -54,7 +54,7 @@ router.post('/complete-onboarding', auth, async (req, res) => {
 
     await pool.query(
       'UPDATE users SET onboarding_completed = TRUE, booking_slug = $1 WHERE id = $2',
-      [slug, req.user.id]
+      [slug, req.userId]
     );
     res.json({ success: true, slug });
   } catch (err) {
