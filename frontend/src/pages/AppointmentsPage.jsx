@@ -50,7 +50,7 @@ export default function AppointmentsPage() {
     } catch { showToast('❌ Erro ao atualizar status'); }
   };
 
-  const formatDate = (dt) => new Date(dt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  const formatDate = (dt) => new Date(dt).toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', timeZone: 'America/Sao_Paulo' });
 
   return (
     <>
