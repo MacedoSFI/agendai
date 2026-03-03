@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
 const crypto = require('crypto');
 const { Resend } = require('resend');
-const resend = new Resend(process.env.re_7r9J2VYj_Giz4ns5Cjzym7gq8hwWVeUFx);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const register = async (req, res) => {
   const { name, email, password, phone, profession, business_name } = req.body;
