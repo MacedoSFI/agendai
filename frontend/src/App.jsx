@@ -12,6 +12,7 @@ import ClientsPage from './pages/ClientsPage';
 import ServicesPage from './pages/ServicesPage';
 import ReportsPage from './pages/ReportsPage';
 import SettingsPage from './pages/SettingsPage';
+import BookingPage from './pages/BookingPage';
 import { BarbeariaNichePage, ClinicaNichePage, PsicologoNichePage, NutricionistaNichePage } from './pages/NichePages';
 
 function PrivateRoute({ children }) {
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<LoginPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/agendar/:slug" element={<BookingPage />} />
           <Route path="/para/barbearia" element={<BarbeariaNichePage />} />
           <Route path="/para/clinica" element={<ClinicaNichePage />} />
           <Route path="/para/psicologo" element={<PsicologoNichePage />} />

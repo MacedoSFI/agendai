@@ -27,6 +27,10 @@ router.post('/services', auth, servicesCtrl.create);
 router.put('/services/:id', auth, servicesCtrl.update);
 router.delete('/services/:id', auth, servicesCtrl.remove);
 
+// ── Booking (público) ───────────────────────
+const bookingRouter = require('./booking');
+router.use('/booking', bookingRouter);
+
 // ── Working Hours ─────────────────────────────
 const workingHoursRouter = require('./workingHours');
 router.use('/working-hours', workingHoursRouter);
