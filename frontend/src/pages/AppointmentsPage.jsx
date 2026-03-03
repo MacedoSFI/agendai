@@ -32,7 +32,8 @@ export default function AppointmentsPage() {
     e.preventDefault();
     setSaving(true);
     try {
-      await api.post('/appointments', form);
+      const formData = { ...form, start_time: new Date(form.start_time).toISOString().replace("Z", "-03:00") };
+      await api.post("/appointments", formData);
       setShowModal(false);
       setForm({ client_id: '', service_id: '', start_time: '', notes: '' });
       load();
