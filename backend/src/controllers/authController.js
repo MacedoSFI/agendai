@@ -1,6 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/database');
+const crypto = require('crypto');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.re_7r9J2VYj_Giz4ns5Cjzym7gq8hwWVeUFx);
 
 const register = async (req, res) => {
   const { name, email, password, phone, profession, business_name } = req.body;
@@ -82,5 +85,65 @@ const updateProfile = async (req, res) => {
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 };
+const forgotPassword = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email obrigatório' });
+  try {
+    const { rows: [user] } = await pool.query(
+      'SELECT id, name FROM users WHERE email = $1', [email]
+    );
+    if (!user) {
+      return res.json({ message: 'Se este email estiver cadastrado, você receberá as instruções em breve.' });
+    }
+    await pool.query('UPDATE password_resets SET used = true WHERE user_id = $1', [user.id]);
+    const token     = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 hora
+    await pool.query(
+      'INSERT INTO password_resets (user_id, token, expires_at) VALUES ($1,$2,$3)',
+      [user.id, token, expiresAt]
+    );
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+    await resend.emails.send({
+      from:    'AgendAI <onboarding@resend.dev>',
+      to:      email,
+      subject: 'Redefinição de senha — AgendAI',
+      html: `
+        <div style="font-family:sans-serif;max-width:480px;margin:0 auto;padding:32px">
+          <h2 style="color:#7c6af7">AgendAI</h2>
+          <p>Olá, <strong>${user.name}</strong>!</p>
+          <p>Clique no botão abaixo para redefinir sua senha:</p>
+          <a href="${resetUrl}" style="display:inline-block;margin:24px 0;padding:14px 28px;background:linear-gradient(135deg,#7c6af7,#4fd1c5);color:#fff;border-radius:8px;text-decoration:none;font-weight:600">
+            Redefinir minha senha
+          </a>
+          <p style="color:#888;font-size:13px">Link expira em <strong>1 hora</strong>. Se não foi você, ignore este email.</p>
+        </div>
+      `,
+    });
+    res.json({ message: 'Se este email estiver cadastrado, você receberá as instruções em breve.' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro ao enviar email. Tente novamente.' });
+  }
+};
 
-module.exports = { register, login, getProfile, updateProfile };
+const resetPassword = async (req, res) => {
+  const { token, password } = req.body;
+  if (!token || !password) return res.status(400).json({ error: 'Token e senha obrigatórios' });
+  if (password.length < 8)  return res.status(400).json({ error: 'Senha deve ter no mínimo 8 caracteres' });
+  try {
+    const { rows: [reset] } = await pool.query(
+      `SELECT * FROM password_resets WHERE token=$1 AND used=false AND expires_at > NOW()`,
+      [token]
+    );
+    if (!reset) return res.status(400).json({ error: 'Link inválido ou expirado. Solicite um novo.' });
+    const password_hash = await bcrypt.hash(password, 12);
+    await pool.query('UPDATE users SET password_hash=$1 WHERE id=$2', [password_hash, reset.user_id]);
+    await pool.query('UPDATE password_resets SET used=true WHERE id=$1', [reset.id]);
+    res.json({ message: 'Senha redefinida com sucesso!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+};
+
+module.exports = { register, login, getProfile, updateProfile, forgotPassword, resetPassword };

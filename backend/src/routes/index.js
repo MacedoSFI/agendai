@@ -6,12 +6,15 @@ const authCtrl = require('../controllers/authController');
 const clientsCtrl = require('../controllers/clientsController');
 const servicesCtrl = require('../controllers/servicesController');
 const apptCtrl = require('../controllers/appointmentsController');
+const { forgotPassword, resetPassword } = require('../controllers/authController');
 
 // ── Auth ──────────────────────────────────────
 router.post('/auth/register', authCtrl.register);
 router.post('/auth/login', authCtrl.login);
 router.get('/auth/profile', auth, authCtrl.getProfile);
 router.put('/auth/profile', auth, authCtrl.updateProfile);
+router.post('/auth/forgot-password', forgotPassword);
+router.post('/auth/reset-password',  resetPassword);
 
 // ── Clients ───────────────────────────────────
 router.get('/clients', auth, clientsCtrl.getAll);
