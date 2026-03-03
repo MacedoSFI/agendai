@@ -46,7 +46,11 @@ router.post('/', auth, async (req, res) => {
 // POST /api/working-hours/complete-onboarding — marca onboarding como concluído
 router.post('/complete-onboarding', auth, async (req, res) => {
   try {
-    const slug = req.body.slug || req.user.business_name
+    const { rows: [user] } = await pool.query(
+      'SELECT business_name FROM users WHERE id = $1',
+      [req.userId]
+    );
+    const slug = req.body.slug || user?.business_name
       ?.toLowerCase()
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
