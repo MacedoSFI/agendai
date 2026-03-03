@@ -60,7 +60,7 @@ const create = async (req, res) => {
     if (!svcResult.rows[0]) return res.status(404).json({ error: 'Serviço não encontrado' });
     const service = svcResult.rows[0];
 
-    const start = new Date(start_time);
+    const start = new Date(start_time + (start_time.includes("T") && !start_time.includes("Z") && !start_time.includes("+") ? "-03:00" : ""));
     const end = new Date(start.getTime() + service.duration_minutes * 60000);
 
     // Verifica conflito de horário
