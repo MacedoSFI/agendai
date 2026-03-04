@@ -28,8 +28,7 @@ const PLANS = [
   {
     name: 'Gratuito', price: 'R$ 0', period: '/sempre', desc: 'Para começar e experimentar', color: '#4fd1c5', cta: 'Começar grátis', highlight: false,
     features: [
-      { ok: true, label: 'Link de agendamento público' },
-      { ok: true, label: 'Agendamentos ilimitados' },
+      { ok: true, label: 'Até 30 agendamentos no mês' },
       { ok: true, label: 'Gestão de clientes' },
       { ok: true, label: 'Agenda semanal' },
       { ok: true, label: 'Relatórios mensais' },
@@ -41,7 +40,6 @@ const PLANS = [
     features: [
       { ok: true, label: 'Tudo do plano gratuito' },
       { ok: true, label: 'Múltiplos profissionais' },
-      { ok: true, label: 'Personalização do link' },
       { ok: true, label: 'Suporte prioritário' },
       { ok: true, label: 'Atualizações antecipadas' },
       { ok: true, label: 'Sem limite de serviços' },
