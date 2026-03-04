@@ -15,11 +15,9 @@ export default function LoginPage() {
 
   const [loginForm, setLoginForm]       = useState({ email: '', password: '' });
   const [registerForm, setRegisterForm] = useState({ name: '', email: '', password: '', phone: '', profession: '', business_name: '' });
-  const [forgotEmail, setForgotEmail]   = useState('');
   const [resetForm, setResetForm]       = useState({ password: '', confirm: '' });
 
-  // Se veio com ?token=xxx na URL, vai direto para tela de redefinir
-  const resetToken = searchParams.get('token');
+  const resetToken   = searchParams.get('token');
   const activeScreen = resetToken ? 'reset' : screen;
 
   const handleLogin = async (e) => {
@@ -44,22 +42,9 @@ export default function LoginPage() {
     } finally { setLoading(false); }
   };
 
-  const handleForgot = async (e) => {
-    e.preventDefault();
-    setLoading(true); setError(''); setSuccess('');
-    try {
-      await api.post('/auth/forgot-password', { email: forgotEmail });
-      setSuccess('Se este email estiver cadastrado, você receberá as instruções em breve.');
-    } catch (err) {
-      setError(err.response?.data?.error || 'Erro ao enviar. Tente novamente.');
-    } finally { setLoading(false); }
-  };
-
   const handleReset = async (e) => {
     e.preventDefault();
-    if (resetForm.password !== resetForm.confirm) {
-      return setError('As senhas não coincidem.');
-    }
+    if (resetForm.password !== resetForm.confirm) return setError('As senhas não coincidem.');
     setLoading(true); setError(''); setSuccess('');
     try {
       await api.post('/auth/reset-password', { token: resetToken, password: resetForm.password });
@@ -77,7 +62,7 @@ export default function LoginPage() {
         <p className="auth-tagline">Sua agenda profissional em um só lugar</p>
         <div className="auth-box">
 
-          {/* ── TELA PRINCIPAL ── */}
+          {/* TELA PRINCIPAL */}
           {activeScreen === 'main' && (
             <>
               <div className="auth-tabs">
@@ -105,7 +90,7 @@ export default function LoginPage() {
                     {loading ? 'Entrando...' : 'Entrar'}
                   </button>
                   <div style={{textAlign:'center',marginTop:14}}>
-                    <button type="button" onClick={()=>{ setScreen('forgot'); setError(''); setSuccess(''); }}
+                    <button type="button" onClick={()=>{ setScreen('forgot'); setError(''); }}
                       style={{background:'none',border:'none',color:'#7c6af7',fontSize:13,cursor:'pointer',textDecoration:'underline'}}>
                       Esqueci minha senha
                     </button>
@@ -152,31 +137,27 @@ export default function LoginPage() {
             </>
           )}
 
-          {/* ── TELA ESQUECI A SENHA ── */}
+          {/* TELA ESQUECI A SENHA — só exibe mensagem de suporte */}
           {activeScreen === 'forgot' && (
             <>
-              <h3 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:6}}>Esqueci minha senha</h3>
-              <p style={{fontSize:13,color:'#6b6b80',marginBottom:20}}>Digite seu email cadastrado e enviaremos um link para redefinir sua senha.</p>
-
-              {error   && <div style={errorBox}>{error}</div>}
-              {success && <div style={successBox}>{success}</div>}
-
-              {!success && (
-                <form onSubmit={handleForgot}>
-                  <div className="form-group">
-                    <label>Email cadastrado</label>
-                    <input className="form-control" type="email" required
-                      value={forgotEmail} onChange={e=>setForgotEmail(e.target.value)}
-                      placeholder="seu@email.com"/>
-                  </div>
-                  <button className="btn btn-primary" style={{width:'100%',marginTop:8}} disabled={loading}>
-                    {loading ? 'Enviando...' : 'Enviar link de redefinição'}
-                  </button>
-                </form>
-              )}
-
-              <div style={{textAlign:'center',marginTop:16}}>
-                <button type="button" onClick={()=>{ setScreen('main'); setError(''); setSuccess(''); }}
+              <div style={{textAlign:'center',padding:'8px 0 24px'}}>
+                <div style={{fontSize:40,marginBottom:16}}>🔒</div>
+                <h3 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:12}}>
+                  Esqueceu sua senha?
+                </h3>
+                <p style={{fontSize:14,color:'#6b6b80',lineHeight:1.7,marginBottom:24}}>
+                  Entre em contato com o suporte para redefinir sua senha:
+                </p>
+                <a href="mailto:felipe.tech.brasil@gmail.com"
+                  style={{display:'inline-block',padding:'12px 24px',background:'linear-gradient(135deg,#7c6af7,#4fd1c5)',color:'#fff',borderRadius:10,textDecoration:'none',fontWeight:600,fontSize:14}}>
+                  felipe.tech.brasil@gmail.com
+                </a>
+                <p style={{fontSize:12,color:'#444460',marginTop:16}}>
+                  Responderemos em até 24 horas.
+                </p>
+              </div>
+              <div style={{textAlign:'center'}}>
+                <button type="button" onClick={()=>{ setScreen('main'); setError(''); }}
                   style={{background:'none',border:'none',color:'#6b6b80',fontSize:13,cursor:'pointer'}}>
                   ← Voltar para o login
                 </button>
@@ -184,7 +165,7 @@ export default function LoginPage() {
             </>
           )}
 
-          {/* ── TELA NOVA SENHA ── */}
+          {/* TELA NOVA SENHA (via link de reset) */}
           {activeScreen === 'reset' && (
             <>
               <h3 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:6}}>Criar nova senha</h3>
