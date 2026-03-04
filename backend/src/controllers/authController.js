@@ -104,7 +104,7 @@ const forgotPassword = async (req, res) => {
     // Se for outro usuário, envia para o admin com o link para encaminhar.
     const isAdmin = email === ADMIN_EMAIL;
 
-    await resend.emails.send({
+    const emailResult = await resend.emails.send({
       from:    'AgendAI <onboarding@resend.dev>',
       to:      ADMIN_EMAIL,
       subject: isAdmin
@@ -134,7 +134,7 @@ const forgotPassword = async (req, res) => {
         </div>
       `,
     });
-
+console.log('Resend result:', JSON.stringify(emailResult));
     res.json({ message: 'Se este email estiver cadastrado, você receberá as instruções em breve.' });
   } catch (err) {
     console.error(err);
