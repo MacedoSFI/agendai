@@ -3,16 +3,28 @@ const jwt    = require('jsonwebtoken');
 const crypto = require('crypto');
 const pool   = require('../config/database');
 
+function generateSlug(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .slice(0, 40)
+    + '-' + crypto.randomBytes(3).toString('hex');
+}
+
 const register = async (req, res) => {
   const { name, email, password, phone, profession, business_name } = req.body;
   try {
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) return res.status(400).json({ error: 'Email já cadastrado' });
     const password_hash = await bcrypt.hash(password, 12);
+    const slug = generateSlug(business_name || name);
     const { rows: [user] } = await pool.query(
-      `INSERT INTO users (name, email, password_hash, phone, profession, business_name)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING id, name, email, profession, business_name`,
-      [name, email, password_hash, phone, profession, business_name]
+      `INSERT INTO users (name, email, password_hash, phone, profession, business_name, booking_slug)
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id, name, email, profession, business_name, booking_slug`,
+      [name, email, password_hash, phone, profession, business_name, slug]
     );
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
     res.status(201).json({ user, token });
@@ -40,7 +52,7 @@ const login = async (req, res) => {
 const getProfile = async (req, res) => {
   try {
     const { rows: [user] } = await pool.query(
-      'SELECT id, name, email, phone, profession, business_name, avatar_url, timezone FROM users WHERE id = $1',
+      'SELECT id, name, email, phone, profession, business_name, avatar_url, timezone, booking_slug FROM users WHERE id = $1',
       [req.userId]
     );
     res.json(user);
@@ -55,7 +67,8 @@ const updateProfile = async (req, res) => {
     const { rows: [user] } = await pool.query(
       `UPDATE users SET name=$1, phone=$2, profession=$3, business_name=$4,
        whatsapp_token=$5, whatsapp_phone_id=$6
-       WHERE id=$7 RETURNING id, name, email, phone, profession, business_name`,
+       WHERE id=$7
+       RETURNING id, name, email, phone, profession, business_name, booking_slug`,
       [name, phone, profession, business_name, whatsapp_token, whatsapp_phone_id, req.userId]
     );
     res.json(user);
@@ -90,8 +103,7 @@ const resetPassword = async (req, res) => {
 const getPlanStatus = async (req, res) => {
   try {
     const { rows: [user] } = await pool.query(
-      'SELECT plan, trial_ends_at, plan_expires_at FROM users WHERE id = $1',
-      [req.userId]
+      'SELECT plan, trial_ends_at, plan_expires_at FROM users WHERE id = $1', [req.userId]
     );
     const now      = new Date();
     const trialEnd = user.trial_ends_at ? new Date(user.trial_ends_at) : null;
@@ -99,13 +111,12 @@ const getPlanStatus = async (req, res) => {
     const isPro    = user.plan === 'pro' && planEnd && planEnd > now;
     const isTrial  = user.plan === 'trial' && trialEnd && trialEnd > now;
     const trialDaysLeft = trialEnd ? Math.max(0, Math.ceil((trialEnd - now) / 86400000)) : 0;
-
     res.json({
       plan: isPro ? 'pro' : (isTrial ? 'trial' : 'expired'),
-      trial_ends_at:    user.trial_ends_at,
-      plan_expires_at:  user.plan_expires_at,
-      trial_days_left:  trialDaysLeft,
-      is_active:        isPro || isTrial,
+      trial_ends_at:   user.trial_ends_at,
+      plan_expires_at: user.plan_expires_at,
+      trial_days_left: trialDaysLeft,
+      is_active:       isPro || isTrial,
     });
   } catch (err) {
     console.error(err);
