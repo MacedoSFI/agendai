@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../utils/api';
 
 export default function LoginPage() {
   const [tab, setTab]         = useState('login');
-  const [screen, setScreen]   = useState('main'); // 'main' | 'forgot' | 'reset'
+  const [screen, setScreen]   = useState('main');
   const [loading, setLoading] = useState(false);
   const [error, setError]     = useState('');
   const [success, setSuccess] = useState('');
@@ -55,152 +55,182 @@ export default function LoginPage() {
     } finally { setLoading(false); }
   };
 
+  const professions = ['Barbearia','Clínica de Estética','Personal Trainer','Psicólogo','Manicure / Pedicure','Médico','Dentista','Nutricionista','Outros'];
+
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <div className="auth-logo">AgendAI</div>
-        <p className="auth-tagline">Sua agenda profissional em um só lugar</p>
-        <div className="auth-box">
+    <div style={{ minHeight: '100vh', background: '#080810', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans', sans-serif", padding: '24px 16px', position: 'relative', overflow: 'hidden' }}>
 
-          {/* TELA PRINCIPAL */}
-          {activeScreen === 'main' && (
-            <>
-              <div className="auth-tabs">
-                <button className={`auth-tab ${tab==='login'?'active':''}`} onClick={()=>{ setTab('login'); setError(''); }}>Entrar</button>
-                <button className={`auth-tab ${tab==='register'?'active':''}`} onClick={()=>{ setTab('register'); setError(''); }}>Cadastrar</button>
-              </div>
+      {/* Glow de fundo */}
+      <div style={{ position: 'absolute', top: '20%', left: '50%', transform: 'translateX(-50%)', width: 600, height: 400, background: 'radial-gradient(ellipse, rgba(124,106,247,.12) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', bottom: '10%', right: '10%', width: 300, height: 300, background: 'radial-gradient(circle, rgba(79,209,197,.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-              {error && <div style={errorBox}>{error}</div>}
+      {/* Logo */}
+      <Link to="/" style={{ marginBottom: 32, textDecoration: 'none' }}>
+        <div style={{ fontFamily: 'Syne, sans-serif', fontSize: 28, fontWeight: 800, background: 'linear-gradient(135deg, #7c6af7, #4fd1c5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          AgendAI
+        </div>
+      </Link>
+
+      {/* Card */}
+      <div style={{ width: '100%', maxWidth: 440, background: '#13131a', border: '1px solid #2a2a3a', borderRadius: 20, overflow: 'hidden', position: 'relative', zIndex: 1 }}>
+
+        {/* TELA PRINCIPAL */}
+        {activeScreen === 'main' && (
+          <>
+            {/* Tabs */}
+            <div style={{ display: 'flex', borderBottom: '1px solid #2a2a3a' }}>
+              {['login', 'register'].map(t => (
+                <button key={t} onClick={() => { setTab(t); setError(''); }}
+                  style={{ flex: 1, padding: '16px', background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 600, fontFamily: 'DM Sans, sans-serif', color: tab === t ? '#e8e8f0' : '#6b6b80', borderBottom: tab === t ? '2px solid #7c6af7' : '2px solid transparent', transition: 'all .2s', marginBottom: -1 }}>
+                  {t === 'login' ? 'Entrar' : 'Criar conta'}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ padding: '28px 28px 24px' }}>
+              {tab === 'login' ? (
+                <>
+                  <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 18, fontWeight: 700, marginBottom: 6, color: '#e8e8f0' }}>Bem-vindo de volta</h2>
+                  <p style={{ fontSize: 13, color: '#6b6b80', marginBottom: 24 }}>Entre na sua conta para gerenciar sua agenda</p>
+                </>
+              ) : (
+                <>
+                  <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 18, fontWeight: 700, marginBottom: 6, color: '#e8e8f0' }}>Crie sua conta grátis</h2>
+                  <p style={{ fontSize: 13, color: '#6b6b80', marginBottom: 24 }}>30 dias de acesso completo, sem cartão de crédito</p>
+                </>
+              )}
+
+              {error && (
+                <div style={{ background: 'rgba(252,129,129,.08)', border: '1px solid rgba(252,129,129,.25)', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#fc8181', marginBottom: 18 }}>
+                  {error}
+                </div>
+              )}
 
               {tab === 'login' ? (
-                <form onSubmit={handleLogin}>
-                  <div className="form-group">
-                    <label>Email</label>
-                    <input className="form-control" type="email" required
-                      value={loginForm.email} onChange={e=>setLoginForm({...loginForm,email:e.target.value})}
-                      placeholder="seu@email.com"/>
+                <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                  <div>
+                    <label style={labelSt}>Email</label>
+                    <input style={inputSt} type="email" required placeholder="seu@email.com"
+                      value={loginForm.email} onChange={e => setLoginForm({ ...loginForm, email: e.target.value })} />
                   </div>
-                  <div className="form-group">
-                    <label>Senha</label>
-                    <input className="form-control" type="password" required
-                      value={loginForm.password} onChange={e=>setLoginForm({...loginForm,password:e.target.value})}
-                      placeholder="••••••••"/>
+                  <div>
+                    <label style={labelSt}>Senha</label>
+                    <input style={inputSt} type="password" required placeholder="••••••••"
+                      value={loginForm.password} onChange={e => setLoginForm({ ...loginForm, password: e.target.value })} />
                   </div>
-                  <button className="btn btn-primary" style={{width:'100%',marginTop:8}} disabled={loading}>
-                    {loading ? 'Entrando...' : 'Entrar'}
+                  <button type="submit" disabled={loading} style={{ ...btnPrimary, marginTop: 4 }}>
+                    {loading ? 'Entrando...' : 'Entrar →'}
                   </button>
-                  <div style={{textAlign:'center',marginTop:14}}>
-                    <button type="button" onClick={()=>{ setScreen('forgot'); setError(''); }}
-                      style={{background:'none',border:'none',color:'#7c6af7',fontSize:13,cursor:'pointer',textDecoration:'underline'}}>
+                  <div style={{ textAlign: 'center' }}>
+                    <button type="button" onClick={() => { setScreen('forgot'); setError(''); }}
+                      style={{ background: 'none', border: 'none', color: '#7c6af7', fontSize: 13, cursor: 'pointer' }}>
                       Esqueci minha senha
                     </button>
                   </div>
                 </form>
               ) : (
-                <form onSubmit={handleRegister}>
-                  <div className="form-group"><label>Nome</label>
-                    <input className="form-control" required value={registerForm.name}
-                      onChange={e=>setRegisterForm({...registerForm,name:e.target.value})} placeholder="Seu nome completo"/>
+                <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                  <div>
+                    <label style={labelSt}>Nome completo *</label>
+                    <input style={inputSt} required placeholder="Seu nome"
+                      value={registerForm.name} onChange={e => setRegisterForm({ ...registerForm, name: e.target.value })} />
                   </div>
-                  <div className="form-group"><label>Nome do Negócio</label>
-                    <input className="form-control" value={registerForm.business_name}
-                      onChange={e=>setRegisterForm({...registerForm,business_name:e.target.value})} placeholder="Barbearia Silva, Clínica X..."/>
+                  <div>
+                    <label style={labelSt}>Nome do negócio</label>
+                    <input style={inputSt} placeholder="Barbearia Silva, Clínica X..."
+                      value={registerForm.business_name} onChange={e => setRegisterForm({ ...registerForm, business_name: e.target.value })} />
                   </div>
-                  <div className="form-row">
-                    <div className="form-group"><label>Email</label>
-                      <input className="form-control" type="email" required value={registerForm.email}
-                        onChange={e=>setRegisterForm({...registerForm,email:e.target.value})}/>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                    <div>
+                      <label style={labelSt}>Email *</label>
+                      <input style={inputSt} type="email" required
+                        value={registerForm.email} onChange={e => setRegisterForm({ ...registerForm, email: e.target.value })} />
                     </div>
-                    <div className="form-group"><label>Telefone</label>
-                      <input className="form-control" value={registerForm.phone}
-                        onChange={e=>setRegisterForm({...registerForm,phone:e.target.value})} placeholder="(11) 99999-9999"/>
+                    <div>
+                      <label style={labelSt}>Telefone</label>
+                      <input style={inputSt} placeholder="(11) 99999-9999"
+                        value={registerForm.phone} onChange={e => setRegisterForm({ ...registerForm, phone: e.target.value })} />
                     </div>
                   </div>
-                  <div className="form-group"><label>Profissão</label>
-                    <select className="form-control" value={registerForm.profession}
-                      onChange={e=>setRegisterForm({...registerForm,profession:e.target.value})}>
+                  <div>
+                    <label style={labelSt}>Profissão</label>
+                    <select style={inputSt} value={registerForm.profession} onChange={e => setRegisterForm({ ...registerForm, profession: e.target.value })}>
                       <option value="">Selecione...</option>
-                      <option>Barbearia</option><option>Clínica de Estética</option>
-                      <option>Personal Trainer</option><option>Psicólogo</option>
-                      <option>Manicure / Pedicure</option><option>Médico</option><option>Outros</option>
+                      {professions.map(p => <option key={p}>{p}</option>)}
                     </select>
                   </div>
-                  <div className="form-group"><label>Senha</label>
-                    <input className="form-control" type="password" required value={registerForm.password}
-                      onChange={e=>setRegisterForm({...registerForm,password:e.target.value})} placeholder="Mínimo 8 caracteres"/>
+                  <div>
+                    <label style={labelSt}>Senha *</label>
+                    <input style={inputSt} type="password" required placeholder="Mínimo 8 caracteres"
+                      value={registerForm.password} onChange={e => setRegisterForm({ ...registerForm, password: e.target.value })} />
                   </div>
-                  <button className="btn btn-primary" style={{width:'100%',marginTop:8}} disabled={loading}>
-                    {loading ? 'Criando conta...' : 'Criar Conta Grátis'}
+                  <button type="submit" disabled={loading} style={{ ...btnPrimary, marginTop: 4 }}>
+                    {loading ? 'Criando conta...' : 'Criar conta grátis →'}
                   </button>
                 </form>
               )}
-            </>
-          )}
+            </div>
+          </>
+        )}
 
-          {/* TELA ESQUECI A SENHA — só exibe mensagem de suporte */}
-          {activeScreen === 'forgot' && (
-            <>
-              <div style={{textAlign:'center',padding:'8px 0 24px'}}>
-                <div style={{fontSize:40,marginBottom:16}}>🔒</div>
-                <h3 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:12}}>
-                  Esqueceu sua senha?
-                </h3>
-                <p style={{fontSize:14,color:'#6b6b80',lineHeight:1.7,marginBottom:24}}>
-                  Entre em contato com o suporte para redefinir sua senha:
-                </p>
-                <a href="mailto:felipe.tech.brasil@gmail.com"
-                  style={{display:'inline-block',padding:'12px 24px',background:'linear-gradient(135deg,#7c6af7,#4fd1c5)',color:'#fff',borderRadius:10,textDecoration:'none',fontWeight:600,fontSize:14}}>
-                  felipe.tech.brasil@gmail.com
-                </a>
-                <p style={{fontSize:12,color:'#444460',marginTop:16}}>
-                  Responderemos em até 24 horas.
-                </p>
-              </div>
-              <div style={{textAlign:'center'}}>
-                <button type="button" onClick={()=>{ setScreen('main'); setError(''); }}
-                  style={{background:'none',border:'none',color:'#6b6b80',fontSize:13,cursor:'pointer'}}>
-                  ← Voltar para o login
+        {/* TELA ESQUECI A SENHA */}
+        {activeScreen === 'forgot' && (
+          <div style={{ padding: '32px 28px' }}>
+            <div style={{ textAlign: 'center', marginBottom: 24 }}>
+              <div style={{ fontSize: 40, marginBottom: 12 }}>🔒</div>
+              <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 18, fontWeight: 700, color: '#e8e8f0', marginBottom: 8 }}>Esqueceu sua senha?</h2>
+              <p style={{ fontSize: 13, color: '#6b6b80', lineHeight: 1.6 }}>Entre em contato com o suporte para redefinir sua senha:</p>
+            </div>
+            <a href="mailto:felipe.tech.brasil@gmail.com"
+              style={{ display: 'block', textAlign: 'center', padding: '13px', background: 'linear-gradient(135deg, #7c6af7, #4fd1c5)', color: '#fff', borderRadius: 10, textDecoration: 'none', fontWeight: 600, fontSize: 14, marginBottom: 12 }}>
+              felipe.tech.brasil@gmail.com
+            </a>
+            <p style={{ fontSize: 12, color: '#444460', textAlign: 'center', marginBottom: 20 }}>Respondemos em até 24 horas.</p>
+            <div style={{ textAlign: 'center' }}>
+              <button type="button" onClick={() => { setScreen('main'); setError(''); }}
+                style={{ background: 'none', border: 'none', color: '#6b6b80', fontSize: 13, cursor: 'pointer' }}>
+                ← Voltar para o login
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* TELA NOVA SENHA */}
+        {activeScreen === 'reset' && (
+          <div style={{ padding: '32px 28px' }}>
+            <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 18, fontWeight: 700, color: '#e8e8f0', marginBottom: 6 }}>Criar nova senha</h2>
+            <p style={{ fontSize: 13, color: '#6b6b80', marginBottom: 24 }}>Digite sua nova senha abaixo.</p>
+
+            {error   && <div style={{ background: 'rgba(252,129,129,.08)', border: '1px solid rgba(252,129,129,.25)', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#fc8181', marginBottom: 18 }}>{error}</div>}
+            {success && <div style={{ background: 'rgba(104,211,145,.08)', border: '1px solid rgba(104,211,145,.25)', borderRadius: 10, padding: '10px 14px', fontSize: 13, color: '#68d391', marginBottom: 18 }}>{success} Redirecionando...</div>}
+
+            {!success && (
+              <form onSubmit={handleReset} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div>
+                  <label style={labelSt}>Nova senha</label>
+                  <input style={inputSt} type="password" required minLength={8} placeholder="Mínimo 8 caracteres"
+                    value={resetForm.password} onChange={e => setResetForm({ ...resetForm, password: e.target.value })} />
+                </div>
+                <div>
+                  <label style={labelSt}>Confirmar nova senha</label>
+                  <input style={inputSt} type="password" required placeholder="Repita a senha"
+                    value={resetForm.confirm} onChange={e => setResetForm({ ...resetForm, confirm: e.target.value })} />
+                </div>
+                <button type="submit" disabled={loading} style={{ ...btnPrimary, marginTop: 4 }}>
+                  {loading ? 'Salvando...' : 'Salvar nova senha →'}
                 </button>
-              </div>
-            </>
-          )}
-
-          {/* TELA NOVA SENHA (via link de reset) */}
-          {activeScreen === 'reset' && (
-            <>
-              <h3 style={{fontFamily:'Syne,sans-serif',fontSize:17,fontWeight:700,marginBottom:6}}>Criar nova senha</h3>
-              <p style={{fontSize:13,color:'#6b6b80',marginBottom:20}}>Digite sua nova senha abaixo.</p>
-
-              {error   && <div style={errorBox}>{error}</div>}
-              {success && <div style={successBox}>{success} Redirecionando...</div>}
-
-              {!success && (
-                <form onSubmit={handleReset}>
-                  <div className="form-group">
-                    <label>Nova senha</label>
-                    <input className="form-control" type="password" required minLength={8}
-                      value={resetForm.password} onChange={e=>setResetForm({...resetForm,password:e.target.value})}
-                      placeholder="Mínimo 8 caracteres"/>
-                  </div>
-                  <div className="form-group">
-                    <label>Confirmar nova senha</label>
-                    <input className="form-control" type="password" required
-                      value={resetForm.confirm} onChange={e=>setResetForm({...resetForm,confirm:e.target.value})}
-                      placeholder="Repita a senha"/>
-                  </div>
-                  <button className="btn btn-primary" style={{width:'100%',marginTop:8}} disabled={loading}>
-                    {loading ? 'Salvando...' : 'Salvar nova senha'}
-                  </button>
-                </form>
-              )}
-            </>
-          )}
-
-        </div>
+              </form>
+            )}
+          </div>
+        )}
       </div>
+
+      {/* Rodapé */}
+      <p style={{ marginTop: 24, fontSize: 12, color: '#333350' }}>© 2026 AgendAI · Todos os direitos reservados</p>
     </div>
   );
 }
 
-const errorBox   = { background:'rgba(252,129,129,.1)', border:'1px solid rgba(252,129,129,.3)', borderRadius:8, padding:'10px 14px', fontSize:13, color:'#fc8181', marginBottom:16 };
-const successBox = { background:'rgba(104,211,145,.1)', border:'1px solid rgba(104,211,145,.3)', borderRadius:8, padding:'10px 14px', fontSize:13, color:'#68d391', marginBottom:16 };
+const labelSt  = { display: 'block', fontSize: 11, color: '#6b6b80', textTransform: 'uppercase', letterSpacing: '.5px', marginBottom: 6, fontWeight: 600 };
+const inputSt  = { width: '100%', padding: '10px 14px', background: '#1c1c26', border: '1px solid #2a2a3a', borderRadius: 8, color: '#e8e8f0', fontSize: 14, fontFamily: 'DM Sans, sans-serif', outline: 'none', boxSizing: 'border-box', transition: 'border-color .2s' };
+const btnPrimary = { padding: '12px', background: 'linear-gradient(135deg, #7c6af7, #4fd1c5)', color: '#fff', border: 'none', borderRadius: 10, fontSize: 14, fontWeight: 600, cursor: 'pointer', fontFamily: 'DM Sans, sans-serif', width: '100%' };
