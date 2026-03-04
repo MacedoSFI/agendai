@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import api from '../utils/api';
+import { usePushNotifications } from '../hooks/usePushNotifications';
 
 const NAV_ITEMS = [
   { to: '/app/dashboard',    icon: '🏠', label: 'Dashboard' },
@@ -25,6 +26,8 @@ export default function Layout() {
   const { user, logout } = useAuth();
   const navigate  = useNavigate();
   const location  = useLocation();
+
+  usePushNotifications();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile]       = useState(window.innerWidth < 768);
