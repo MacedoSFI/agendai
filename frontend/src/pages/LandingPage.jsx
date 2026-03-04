@@ -39,7 +39,6 @@ const PLANS = [
     name: 'Pro', price: 'R$ 49', period: '/mês', desc: 'Para profissionais sérios', color: '#7c6af7', cta: 'Assinar Pro', highlight: true,
     features: [
       { ok: true, label: 'Tudo do plano gratuito' },
-      { ok: true, label: 'Múltiplos profissionais' },
       { ok: true, label: 'Suporte prioritário' },
       { ok: true, label: 'Atualizações antecipadas' },
       { ok: true, label: 'Sem limite de serviços' },
