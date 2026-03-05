@@ -51,7 +51,6 @@ const NICHOS = {
     ],
     benefits: [
       'Agenda digital acessível de qualquer dispositivo em tempo real',
-      'WhatsApp automático confirma e lembra os clientes por você',
       'Relatório mensal mostra faturamento por procedimento',
       'Toda a equipe vê a agenda atualizada simultaneamente',
     ],
