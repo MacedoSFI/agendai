@@ -81,9 +81,7 @@ const NICHOS = {
       'Tempo perdido respondendo mensagens de confirmação',
     ],
     benefits: [
-      'Lembrete automático 24h antes — paciente chega preparado',
       'Histórico completo de sessões e observações por paciente',
-      'Confirmação discreta por WhatsApp sem expor informações sensíveis',
       'Relatório mensal de sessões realizadas e faturamento',
     ],
     testimonial: {
