@@ -18,12 +18,10 @@ const NICHOS = {
       'Clientes marcam horário no WhatsApp e você precisa anotar em papel ou planilha',
       'Cliente some no dia do horário e você fica com o tempo vago',
       'Dois clientes marcam o mesmo horário por engano',
-      'Você passa horas respondendo mensagens de confirmação',
+      'Você perde tempo respondendo mensagens de confirmação',
     ],
     benefits: [
       'Clientes veem os horários disponíveis e marcam sozinhos em segundos',
-      'Confirmação automática no WhatsApp logo após o agendamento',
-      'Lembrete automático 24h antes — zero no-show',
       'Zero conflito de horário — o sistema bloqueia automaticamente',
     ],
     testimonial: {
@@ -114,7 +112,6 @@ const NICHOS = {
       'Sem visão clara do faturamento mensal por tipo de consulta',
     ],
     benefits: [
-      'Retornos programados com lembrete automático no WhatsApp',
       'Visualização semanal clara de todas as consultas agendadas',
       'Histórico de cada paciente com observações e evolução',
       'Relatório mensal de consultas por tipo e faturamento total',
