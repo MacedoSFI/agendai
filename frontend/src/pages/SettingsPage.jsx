@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function SettingsPage() {
   const { user, updateUser } = useAuth();
-  const [form, setForm]           = useState({ name:'', phone:'', profession:'', business_name:'', whatsapp_token:'', whatsapp_phone_id:'' });
+  const [form, setForm]           = useState({ name:'', phone:'', profession:'', business_name:'' });
   const [passwordForm, setPasswordForm] = useState({ current:'', newPass:'', confirm:'' });
   const [planInfo, setPlanInfo]   = useState(null);
   const [saving, setSaving]       = useState(false);
@@ -14,8 +14,7 @@ export default function SettingsPage() {
     if (user) {
       setForm({
         name: user.name || '', phone: user.phone || '',
-        profession: user.profession || '', business_name: user.business_name || '',
-        whatsapp_token: user.whatsapp_token || '', whatsapp_phone_id: user.whatsapp_phone_id || '',
+        profession: user.profession || '', business_name: user.business_name || ''
       });
     }
     api.get('/auth/plan').then(r => setPlanInfo(r.data)).catch(console.error);
@@ -139,20 +138,6 @@ export default function SettingsPage() {
         </div>
 
         <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
-          {/* WHATSAPP */}
-          <div style={card}>
-            <div style={cardHeader}><h2 style={cardTitle}>📱 Integração WhatsApp</h2></div>
-            <div style={{ padding:20, display:'flex', flexDirection:'column', gap:14 }}>
-              <div style={{ padding:'12px 14px', background:'rgba(79,209,197,.08)', border:'1px solid rgba(79,209,197,.2)', borderRadius:8, fontSize:12, color:'#4fd1c5', lineHeight:1.6 }}>
-                ℹ️ Configure sua conta Meta Business para envio automático de mensagens.<br/>
-                <a href="https://developers.facebook.com" target="_blank" rel="noreferrer" style={{color:'#4fd1c5'}}>developers.facebook.com →</a>
-              </div>
-              <div><label style={labelStyle}>WhatsApp Token</label><input type="password" style={inputStyle} value={form.whatsapp_token} onChange={e=>setForm({...form,whatsapp_token:e.target.value})} placeholder="EAAxxxxxxxxxx..."/></div>
-              <div><label style={labelStyle}>Phone Number ID</label><input style={inputStyle} value={form.whatsapp_phone_id} onChange={e=>setForm({...form,whatsapp_phone_id:e.target.value})} placeholder="123456789012345"/></div>
-              <button type="button" onClick={handleSaveProfile} style={{...btnPrimary,width:'100%'}}>Salvar Configuração</button>
-            </div>
-          </div>
-
           {/* SENHA */}
           <div style={card}>
             <div style={cardHeader}><h2 style={cardTitle}>🔐 Segurança</h2></div>
