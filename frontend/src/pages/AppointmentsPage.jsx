@@ -30,6 +30,14 @@ export default function AppointmentsPage() {
   const [saving, setSaving] = useState(false);
   const [toast, setToast] = useState("");
 
+  // Carrega clientes e serviços ao abrir modal
+  useEffect(() => {
+    if (showModal) {
+      api.get("/clients").then(r => setClients(r.data)).catch(console.error);
+      api.get("/services").then(r => setServices(r.data)).catch(console.error);
+    }
+  }, [showModal]);
+
   const load = useCallback(
     (silent = false) => {
       const params = filterStatus ? `?status=${filterStatus}` : "";
