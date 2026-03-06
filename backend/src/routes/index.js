@@ -18,6 +18,7 @@ router.put ('/auth/profile',         auth,                  authCtrl.updateProfi
 router.post('/auth/forgot-password', forgotPasswordLimiter, authCtrl.forgotPassword);
 router.post('/auth/reset-password',                         authCtrl.resetPassword);
 router.get ('/auth/plan',            auth,                  authCtrl.getPlanStatus);
+router.put ('/auth/password',        auth,                  authCtrl.changePassword);
 
 // ── Push notifications ────────────────────────
 router.get('/push/vapid-public-key', auth, (req, res) => {
