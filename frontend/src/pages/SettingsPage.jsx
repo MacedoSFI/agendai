@@ -43,6 +43,20 @@ export default function SettingsPage() {
     } finally { setSaving(false); }
   };
 
+  const handleChangePassword = async (e) => {
+    e.preventDefault();
+    if (passwordForm.newPass !== passwordForm.confirm)
+      return showToast('❌ As senhas não coincidem', 'error');
+    setSaving(true);
+    try {
+      await api.put('/auth/password', { current: passwordForm.current, newPass: passwordForm.newPass });
+      setPasswordForm({ current:'', newPass:'', confirm:'' });
+      showToast('✅ Senha alterada com sucesso!');
+    } catch (err) {
+      showToast('❌ ' + (err.response?.data?.error || 'Erro ao alterar senha'), 'error');
+    } finally { setSaving(false); }
+  };
+
   const professions = ['Barbearia','Clínica de Estética','Personal Trainer','Psicólogo','Manicure / Pedicure','Médico','Dentista','Nutricionista','Outros'];
 
   const planLabel  = planInfo?.plan === 'pro' ? '⭐ Pro' : planInfo?.plan === 'trial' ? '🆓 Trial' : '🔒 Expirado';

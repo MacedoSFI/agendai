@@ -124,4 +124,22 @@ const getPlanStatus = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getProfile, updateProfile, forgotPassword, resetPassword, getPlanStatus };
+
+const changePassword = async (req, res) => {
+  const { current, newPass } = req.body;
+  if (!current || !newPass) return res.status(400).json({ error: 'Campos obrigatórios' });
+  if (newPass.length < 8) return res.status(400).json({ error: 'Nova senha deve ter no mínimo 8 caracteres' });
+  try {
+    const { rows: [user] } = await pool.query('SELECT password_hash FROM users WHERE id = $1', [req.userId]);
+    const valid = await bcrypt.compare(current, user.password_hash);
+    if (!valid) return res.status(401).json({ error: 'Senha atual incorreta' });
+    const password_hash = await bcrypt.hash(newPass, 12);
+    await pool.query('UPDATE users SET password_hash=$1 WHERE id=$2', [password_hash, req.userId]);
+    res.json({ message: 'Senha alterada com sucesso!' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+};
+
+module.exports = { register, login, getProfile, updateProfile, forgotPassword, resetPassword, getPlanStatus, changePassword };
