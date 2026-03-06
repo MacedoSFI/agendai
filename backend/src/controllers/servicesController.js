@@ -13,12 +13,12 @@ const getAll = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const { name, description, duration_minutes, price, color } = req.body;
+  const { name, description, duration_minutes, price, color, payment_message } = req.body;
   try {
     const result = await pool.query(
-      `INSERT INTO services (user_id, name, description, duration_minutes, price, color)
-       VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
-      [req.userId, name, description, duration_minutes, price, color || '#6366f1']
+      `INSERT INTO services (user_id, name, description, duration_minutes, price, color, payment_message)
+       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      [req.userId, name, description, duration_minutes, price, color || '#6366f1', payment_message || null]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -27,12 +27,12 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
-  const { name, description, duration_minutes, price, color, active } = req.body;
+  const { name, description, duration_minutes, price, color, active, payment_message } = req.body;
   try {
     const result = await pool.query(
-      `UPDATE services SET name=$1, description=$2, duration_minutes=$3, price=$4, color=$5, active=$6
-       WHERE id=$7 AND user_id=$8 RETURNING *`,
-      [name, description, duration_minutes, price, color, active, req.params.id, req.userId]
+      `UPDATE services SET name=$1, description=$2, duration_minutes=$3, price=$4, color=$5, active=$6, payment_message=$7
+       WHERE id=$8 AND user_id=$9 RETURNING *`,
+      [name, description, duration_minutes, price, color, active, payment_message || null, req.params.id, req.userId]
     );
     if (!result.rows[0]) return res.status(404).json({ error: 'Serviço não encontrado' });
     res.json(result.rows[0]);
