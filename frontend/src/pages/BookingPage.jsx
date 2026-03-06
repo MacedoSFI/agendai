@@ -251,6 +251,12 @@ export default function BookingPage() {
               </span></div>
               <div style={{ ...confirmRow, borderBottom: 'none' }}><span style={confirmLabel}>Valor</span><span style={{ ...confirmValue, color: '#4fd1c5', fontWeight: 700 }}>R$ {parseFloat(confirmation.price).toFixed(2)}</span></div>
             </div>
+            {confirmation.payment_message && (
+              <div style={{ marginTop: 20, padding: '16px', background: 'rgba(246,173,85,.08)', border: '1px solid rgba(246,173,85,.25)', borderRadius: 12, textAlign: 'left' }}>
+                <div style={{ fontSize: 12, color: '#f6ad55', fontWeight: 700, marginBottom: 8, textTransform: 'uppercase', letterSpacing: .5 }}>💰 Informação de pagamento</div>
+                <p style={{ fontSize: 13, color: '#c8c8d8', lineHeight: 1.7, margin: 0 }}>{confirmation.payment_message}</p>
+              </div>
+            )}
             <p style={{ color: '#555570', fontSize: 12, marginTop: 24 }}>Agendado via AgendAI ✨</p>
           </div>
         )}

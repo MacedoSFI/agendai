@@ -148,6 +148,8 @@ router.post("/:slug", async (req, res) => {
         service_name:      service.name,
         professional_name: user.name,
         business_name:     user.business_name,
+        payment_message:   service.payment_message || null,
+        business_name:     user.business_name,
         price:             service.price,
       }
     });
