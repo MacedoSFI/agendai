@@ -58,7 +58,7 @@ export default function ClientsPage() {
       <div style={card}>
         {loading ? <div style={{ padding: 40, textAlign: 'center', color: '#6b6b80' }}>Carregando...</div> :
           filtered.length === 0 ? <div style={{ padding: 40, textAlign: 'center', color: '#6b6b80' }}>Nenhum cliente encontrado</div> :
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch' }}><table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 500 }}>
             <thead>
               <tr>{['Cliente', 'Telefone', 'Email', 'Observações', 'Ações'].map(h => <th key={h} style={th}>{h}</th>)}</tr>
             </thead>
@@ -83,7 +83,7 @@ export default function ClientsPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         }
       </div>
 
