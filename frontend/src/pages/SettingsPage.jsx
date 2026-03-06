@@ -174,22 +174,20 @@ export default function SettingsPage() {
         {/* ── SEGURANÇA ── */}
         <div style={card}>
           <div style={cardHeader}><h2 style={cardTitle}>🔐 Segurança</h2></div>
-          <div style={{ padding:20, display:'flex', flexDirection:'column', gap:14 }}>
+          <form onSubmit={handleChangePassword} style={{ padding:20, display:'flex', flexDirection:'column', gap:14 }}>
             <div><label style={labelStyle}>Senha Atual</label>
-              <input type="password" style={inputStyle} value={passwordForm.current} onChange={e=>setPasswordForm({...passwordForm,current:e.target.value})} placeholder="••••••••"/>
+              <input required type="password" style={inputStyle} value={passwordForm.current} onChange={e=>setPasswordForm({...passwordForm,current:e.target.value})} placeholder="••••••••"/>
             </div>
             <div><label style={labelStyle}>Nova Senha</label>
-              <input type="password" style={inputStyle} value={passwordForm.newPass} onChange={e=>setPasswordForm({...passwordForm,newPass:e.target.value})} placeholder="Mínimo 8 caracteres"/>
+              <input required type="password" style={inputStyle} value={passwordForm.newPass} onChange={e=>setPasswordForm({...passwordForm,newPass:e.target.value})} placeholder="Mínimo 8 caracteres"/>
             </div>
             <div><label style={labelStyle}>Confirmar Nova Senha</label>
-              <input type="password" style={inputStyle} value={passwordForm.confirm} onChange={e=>setPasswordForm({...passwordForm,confirm:e.target.value})} placeholder="••••••••"/>
+              <input required type="password" style={inputStyle} value={passwordForm.confirm} onChange={e=>setPasswordForm({...passwordForm,confirm:e.target.value})} placeholder="••••••••"/>
             </div>
-            <button type="button"
-              style={{...btnPrimary, background:'transparent', border:'1px solid #2a2a3a', color:'#e8e8f0'}}
-              onClick={()=>showToast('⚠️ Em implementação — contate o suporte para alterar a senha')}>
-              Alterar Senha
+            <button type="submit" disabled={saving} style={{...btnPrimary, opacity:saving?0.7:1}}>
+              {saving ? 'Alterando...' : 'Alterar Senha'}
             </button>
-          </div>
+          </form>
         </div>
 
       </div>
