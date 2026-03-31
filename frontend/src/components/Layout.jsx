@@ -12,12 +12,13 @@ const NAV_ITEMS = [
   { to: '/app/services',     icon: '✂️', label: 'Serviços' },
   { to: '/app/reports',      icon: '📊', label: 'Relatórios' },
   { to: '/app/settings',     icon: '⚙️', label: 'Configurações' },
+  { to: '/app/orcamentos',   icon: '📄', label: 'Orçamentos', pro: true },
 ];
 
 const SECTIONS = [
   { label: 'Menu',      items: [0, 1, 2] },
   { label: 'Cadastros', items: [3, 4] },
-  { label: 'Análises',  items: [5, 6] },
+  { label: 'Análises',  items: [5, 6, 7] },
 ];
 
 const MOBILE_NAV_IDXS = [0, 1, 2, 3, 5];
@@ -123,7 +124,11 @@ export default function Layout() {
         {SECTIONS.map(s => (
           <div key={s.label}>
             <div style={{ fontSize: 10, textTransform: 'uppercase', letterSpacing: 1, color: '#6b6b80', padding: '14px 12px 6px' }}>{s.label}</div>
-            {s.items.map(idx => <NavItemEl key={NAV_ITEMS[idx].to} item={NAV_ITEMS[idx]} />)}
+            {s.items.map(idx => {
+              const item = NAV_ITEMS[idx];
+              if (item.pro && user?.plan !== 'pro') return null;
+              return <NavItemEl key={item.to} item={item} />;
+            })}
           </div>
         ))}
       </div>

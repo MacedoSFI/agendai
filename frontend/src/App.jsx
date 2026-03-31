@@ -16,6 +16,8 @@ import BookingPage from './pages/BookingPage';
 import { BarbeariaNichePage, ClinicaNichePage, PsicologoNichePage, NutricionistaNichePage } from './pages/NichePages';
 import BlogPage from './pages/BlogPage';
 import AdminPage from './pages/AdminPage';
+import QuotesPage from './pages/QuotesPage';
+import PublicQuotePage from './pages/PublicQuotePage';
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
@@ -42,6 +44,8 @@ export default function App() {
           <Route path="/reset-password" element={<LoginPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/orcamento/:templateId" element={<PublicQuotePage />} />
+
           {/* Páginas privadas (requerem login + onboarding) */}
           <Route path="/app" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="/app/dashboard" replace />} />
@@ -52,6 +56,7 @@ export default function App() {
             <Route path="services" element={<ServicesPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="/orcamentos" element={<QuotesPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
