@@ -15,6 +15,7 @@ import SettingsPage from './pages/SettingsPage';
 import BookingPage from './pages/BookingPage';
 import { BarbeariaNichePage, ClinicaNichePage, PsicologoNichePage, NutricionistaNichePage } from './pages/NichePages';
 import BlogPage from './pages/BlogPage';
+import AdminPage from './pages/AdminPage';
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/para/nutricionista" element={<NutricionistaNichePage />} />
           <Route path="/reset-password" element={<LoginPage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/admin" element={<AdminPage />} />
           {/* Páginas privadas (requerem login + onboarding) */}
           <Route path="/app" element={<PrivateRoute><Layout /></PrivateRoute>}>
             <Route index element={<Navigate to="/app/dashboard" replace />} />

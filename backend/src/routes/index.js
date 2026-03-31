@@ -67,6 +67,10 @@ router.use('/booking', bookingLimiter, bookingRouter);
 const workingHoursRouter = require('./workingHours');
 router.use('/working-hours', workingHoursRouter);
 
+// ── Painel Admin ─────────────────────────────
+const adminRouter = require('./admin');
+router.use('/admin', adminRouter);
+
 // ── Rotas protegidas por auth + plano ─────────
 router.get   ('/clients',                        auth, plan, clientsCtrl.getAll);
 router.get   ('/clients/:id',    validateUUID(), auth, plan, clientsCtrl.getOne);
