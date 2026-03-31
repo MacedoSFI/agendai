@@ -39,6 +39,8 @@ const PLANS = [
     name: 'Pro', price: 'R$ 49', period: '/mês', desc: 'Para profissionais sérios', color: '#7c6af7', cta: 'Assinar Pro', highlight: true,
     features: [
       { ok: true, label: 'Tudo do plano gratuito' },
+      { ok: true, label: 'Orçamento automático com link compartilhável' },
+      { ok: true, label: 'Conversão de orçamento em agendamento' },
       { ok: true, label: 'Suporte prioritário' },
       { ok: true, label: 'Atualizações antecipadas' },
       { ok: true, label: 'Sem limite de serviços' },
@@ -156,6 +158,67 @@ export default function LandingPage() {
                 <p style={{ fontSize: 14, color: '#6b6b80', lineHeight: 1.7 }}>{h.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ORÇAMENTO PRO */}
+      <section style={{ padding: '80px 5%', background: 'rgba(255,255,255,.015)' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: 48, alignItems: 'center' }}>
+            <div>
+              <div style={{ display: 'inline-block', padding: '4px 14px', borderRadius: 20, background: 'rgba(124,106,247,.15)', border: '1px solid rgba(124,106,247,.3)', color: '#7c6af7', fontSize: 12, fontWeight: 600, letterSpacing: 1, marginBottom: 20 }}>
+                ✦ Exclusivo Pro
+              </div>
+              <h2 style={{ fontFamily: 'Syne, sans-serif', fontSize: 'clamp(24px, 4vw, 38px)', fontWeight: 800, lineHeight: 1.2, marginBottom: 16 }}>
+                Orçamento automático,<br/>direto no seu link
+              </h2>
+              <p style={{ color: '#8b8ba0', fontSize: 15, lineHeight: 1.8, marginBottom: 28 }}>
+                Crie formulários de orçamento com seus serviços e preços. Compartilhe o link com o cliente, ele marca o que quer e o total é calculado na hora. Com um clique, o orçamento vira agendamento.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {[
+                  { icon: '📋', text: 'Monte templates com itens e preços personalizados' },
+                  { icon: '🔗', text: 'Compartilhe o link via WhatsApp, Instagram ou onde quiser' },
+                  { icon: '✅', text: 'Cliente seleciona os serviços e envia o orçamento' },
+                  { icon: '📅', text: 'Converta o orçamento aceito em agendamento com 1 clique' },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 10, background: 'rgba(124,106,247,.12)', border: '1px solid rgba(124,106,247,.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>{item.icon}</div>
+                    <p style={{ fontSize: 14, color: '#a0a0b8', lineHeight: 1.6, paddingTop: 6 }}>{item.text}</p>
+                  </div>
+                ))}
+              </div>
+              <a href="/register" style={{ display: 'inline-block', marginTop: 32, padding: '13px 28px', background: 'linear-gradient(135deg, #7c6af7, #4fd1c5)', borderRadius: 12, color: '#fff', fontWeight: 700, fontSize: 14, textDecoration: 'none', fontFamily: "'DM Sans', sans-serif" }}>
+                Começar grátis →
+              </a>
+            </div>
+            <div style={{ background: '#0d0d1a', border: '1px solid #1a1a2e', borderRadius: 20, padding: 24 }}>
+              <div style={{ fontSize: 12, color: '#555570', textTransform: 'uppercase', letterSpacing: 1, marginBottom: 16 }}>Preview — Orçamento do cliente</div>
+              {[
+                { name: 'Maquiagem artística', price: 'R$ 180,00', checked: true },
+                { name: 'Penteado para noiva', price: 'R$ 220,00', checked: true },
+                { name: 'Unhas em gel', price: 'R$ 90,00', checked: false },
+                { name: 'Cilios fio a fio', price: 'R$ 150,00', checked: false },
+              ].map((item, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 0', borderBottom: '1px solid #1a1a2e' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 20, height: 20, borderRadius: 4, border: `2px solid ${item.checked ? '#7c6af7' : '#2a2a3a'}`, background: item.checked ? '#7c6af7' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      {item.checked && <span style={{ color: '#fff', fontSize: 11 }}>✓</span>}
+                    </div>
+                    <span style={{ fontSize: 13, color: item.checked ? '#e8e8f0' : '#555570' }}>{item.name}</span>
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: item.checked ? '#68d391' : '#333350' }}>{item.price}</span>
+                </div>
+              ))}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 16, padding: '12px 0' }}>
+                <span style={{ fontSize: 13, color: '#8b8ba0' }}>Total selecionado</span>
+                <span style={{ fontSize: 18, fontWeight: 800, color: '#68d391' }}>R$ 400,00</span>
+              </div>
+              <div style={{ marginTop: 12, padding: '12px 16px', background: 'linear-gradient(135deg, rgba(124,106,247,.15), rgba(79,209,197,.1))', border: '1px solid rgba(124,106,247,.2)', borderRadius: 10, fontSize: 13, color: '#a0a0b8', textAlign: 'center' }}>
+                📅 Converter em agendamento →
+              </div>
+            </div>
           </div>
         </div>
       </section>
