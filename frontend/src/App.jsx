@@ -56,7 +56,7 @@ export default function App() {
             <Route path="services" element={<ServicesPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="settings" element={<SettingsPage />} />
-            <Route path="/orcamentos" element={<QuotesPage />} />
+            <Route path="orcamentos" element={<QuotesPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
